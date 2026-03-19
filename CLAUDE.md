@@ -23,6 +23,17 @@ gdformat --check .   # formatting
 gdlint .             # style rules
 ```
 
+## MCP: Context7 for Godot API Lookups
+
+Context7 is configured in `plugin.json` for real-time Godot documentation lookups. Use it automatically when verifying API signatures, method names, or node types.
+
+```
+1. resolve-library-id → search for "godot" to get the library ID
+2. query-docs → query with the library ID for specific API details
+```
+
+No additional MCP servers are needed. If Context7's Godot coverage proves insufficient for a specific domain (e.g., GDExtension, advanced shaders), evaluate adding a dedicated godot-mcp at that time.
+
 ## Command Namespace
 
 All commands use `/gc:` prefix:
