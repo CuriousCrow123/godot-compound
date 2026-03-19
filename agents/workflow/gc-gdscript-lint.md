@@ -1,7 +1,7 @@
 ---
 name: gc-gdscript-lint
 description: "Runs gdformat and gdlint checks on GDScript files for formatting and style compliance. Use when checking code formatting or before commits."
-model: haiku
+model: sonnet
 color: yellow
 ---
 
