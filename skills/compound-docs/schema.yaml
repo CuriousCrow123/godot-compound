@@ -1,6 +1,8 @@
 # Godot Project Documentation Schema
 # This schema MUST be validated before writing any documentation file
 
+schema_version: 1
+
 required_fields:
   module:
     type: string
@@ -124,6 +126,15 @@ optional_fields:
   related_components:
     type: array[string]
     description: "Other components that interact with this issue"
+
+  node_types:
+    type: array[string]
+    description: "Godot node type names involved (for grep retrieval)"
+    examples:
+      - "CharacterBody2D"
+      - "Area2D"
+      - "AnimationPlayer"
+      - "TileMapLayer"
 
   tags:
     type: array[string]

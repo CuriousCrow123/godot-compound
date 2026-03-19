@@ -1,14 +1,15 @@
 ---
 module: [Module name or "System" for system-wide]
 date: [YYYY-MM-DD]
-problem_type: [parse_error|runtime_error|performance_issue|scene_corruption|resource_error|import_error|ui_bug|signal_issue|logic_error|integration_issue]
-component: [scene_tree|resource_system|signal_wiring|physics_collision|animation_system|navigation|tilemap|audio|input_system|ui_controls|autoload|save_load|gdscript_tooling|project_config]
+problem_type: [build_error|test_failure|runtime_error|performance_issue|signal_issue|scene_corruption|resource_error|untyped_code|security_issue|ui_bug|integration_issue|logic_error|developer_experience|workflow_issue|best_practice|documentation_gap]
+component: [gdscript|scene_tree|resource|signal_system|ui_control|physics|tilemap|animation|audio|shader|autoload|plugin|project_settings|development_workflow|testing_framework|documentation|tooling]
 symptoms:
   - [Observable symptom 1 - specific error message or behavior]
   - [Observable symptom 2 - what user actually saw/experienced]
-root_cause: [resource_sharing|uid_mismatch|scene_structure_invalid|node_path_fragile|signal_disconnected|autoload_order|untyped_code|logic_error|api_misuse|process_callback_abuse|config_error|import_cache_stale|missing_dependency]
+root_cause: [missing_signal_connection|shared_resource_mutation|missing_preload|scene_reference_broken|wrong_api|type_error|node_order_issue|async_timing|memory_leak|config_error|logic_error|test_isolation|missing_validation|missing_workflow_step|inadequate_documentation|missing_tooling|incomplete_setup]
 godot_version: [4.6.1 - optional]
-resolution_type: [code_fix|scene_fix|config_change|resource_fix|dependency_update|environment_setup|workflow_improvement|architecture_change]
+node_types: [CharacterBody2D, Area2D - optional, for grep retrieval]
+resolution_type: [code_fix|scene_fix|resource_fix|config_change|test_fix|addon_update|environment_setup|workflow_improvement|documentation_update|tooling_addition]
 severity: [critical|high|medium|low]
 tags: [keyword1, keyword2, keyword3]
 ---
