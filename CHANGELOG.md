@@ -2,6 +2,20 @@
 
 All notable changes to godot-compound will be documented in this file.
 
+## [0.2.0] - 2026-03-19
+
+### Added
+- **gc-gdscript-reviewer** — Reviews .gd files for static typing, member ordering, naming, signal naming, Resource mutation patterns (8 principles)
+- **gc-resource-safety-reviewer** — Reviews resource integrity: .tres/.tscn references, .uid sidecars, shared Resource mutation, res:// path safety (8 principles)
+- **gc-gdscript-lint** — Runs gdformat + gdlint checks (model: haiku)
+- **gc-godot-architecture-reviewer** — Reviews scene composition, signal flow, autoloads, inheritance depth (7 principles)
+- **gc-godot-performance-reviewer** — Reviews _process abuse, typed hotpaths, scene traversal costs, Server APIs (7 principles)
+- **gc-godot-timing-reviewer** — Reviews signal timing, await races, queue_free safety, call_deferred ordering (7 principles)
+- **gc-godot-export-verifier** — Verifies export presets, asset integrity, platform gotchas, .uid consistency (7 principles)
+- **gdscript-lint skill** — Skill wrapper for gdformat/gdlint with disable-model-invocation
+- **timing-async.md** — Reference file for timing/async patterns (godot-patterns skill)
+- **export-builds.md** — Reference file for export/build patterns (godot-patterns skill)
+
 ## [0.1.0] - 2026-03-19
 
 ### Added

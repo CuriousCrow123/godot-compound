@@ -1,8 +1,10 @@
 {
   "name": "godot-compound",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Godot 4 + GDScript development tools. Agents, skills, and commands for the Plan → Work → Review → Compound loop.",
-  "author": "Alan",
+  "author": {
+    "name": "Alan"
+  },
   "license": "MIT",
   "repository": "https://github.com/CuriousCrow123/godot-compound",
   "keywords": [
