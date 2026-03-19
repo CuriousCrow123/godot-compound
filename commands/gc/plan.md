@@ -158,7 +158,7 @@ Think like a product manager - what would make this issue clear and actionable? 
 
 After planning the issue structure, run SpecFlow Analyzer to validate and refine the feature specification:
 
-- Task compound-engineering:workflow:spec-flow-analyzer(feature_description, research_findings)
+- Task gc-spec-flow-analyzer(feature_description, research_findings)
 
 **SpecFlow Analyzer Output:**
 

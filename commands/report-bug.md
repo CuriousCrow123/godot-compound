@@ -1,13 +1,13 @@
 ---
 name: report-bug
-description: Report a bug in the compound-engineering plugin
+description: Report a bug in the godot-compound plugin
 argument-hint: "[optional: brief description of the bug]"
 disable-model-invocation: true
 ---
 
 # Report a Compounding Engineering Plugin Bug
 
-Report bugs encountered while using the compound-engineering plugin. This command gathers structured information and creates a GitHub issue for the maintainer.
+Report bugs encountered while using the godot-compound plugin. This command gathers structured information and creates a GitHub issue for the maintainer.
 
 ## Step 1: Gather Bug Information
 
@@ -42,7 +42,7 @@ Use the AskUserQuestion tool to collect the following information:
 Automatically gather:
 ```bash
 # Get plugin version
-cat ~/.claude/plugins/installed_plugins.json 2>/dev/null | grep -A5 "compound-engineering" | head -10 || echo "Plugin info not found"
+cat ~/.claude/plugins/installed_plugins.json 2>/dev/null | grep -A5 "godot-compound" | head -10 || echo "Plugin info not found"
 
 # Get Claude Code version
 claude --version 2>/dev/null || echo "Claude CLI version unknown"
@@ -102,16 +102,16 @@ Use the GitHub CLI to create the issue:
 ```bash
 gh issue create \
   --repo CuriousCrow123/godot-compound \
-  --title "[compound-engineering] Bug: [Brief description]" \
+  --title "[godot-compound] Bug: [Brief description]" \
   --body "[Formatted bug report from Step 3]" \
-  --label "bug,compound-engineering"
+  --label "bug,godot-compound"
 ```
 
 **Note:** If labels don't exist, create without labels:
 ```bash
 gh issue create \
   --repo CuriousCrow123/godot-compound \
-  --title "[compound-engineering] Bug: [Brief description]" \
+  --title "[godot-compound] Bug: [Brief description]" \
   --body "[Formatted bug report]"
 ```
 
@@ -120,7 +120,7 @@ gh issue create \
 After the issue is created:
 1. Display the issue URL to the user
 2. Thank them for reporting the bug
-3. Let them know the maintainer (Kieran Klaassen) will be notified
+3. Let them know the maintainer will be notified
 
 ## Output Format
 
@@ -128,9 +128,9 @@ After the issue is created:
 ✅ Bug report submitted successfully!
 
 Issue: https://github.com/CuriousCrow123/godot-compound/issues/[NUMBER]
-Title: [compound-engineering] Bug: [description]
+Title: [godot-compound] Bug: [description]
 
-Thank you for helping improve the compound-engineering plugin!
+Thank you for helping improve the godot-compound plugin!
 The maintainer will review your report and respond as soon as possible.
 ```
 

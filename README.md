@@ -1,11 +1,14 @@
 # Godot Compound
 
-Godot 4 + GDScript development tools for Claude Code. Fork of [Compound Engineering](https://github.com/EveryInc/compound-engineering-plugin) v2.38.1, stripped of all web/Rails/TypeScript content.
+Godot 4 + GDScript development tools for Claude Code. Fork of [Compound Engineering](https://github.com/EveryInc/compound-engineering-plugin) v2.38.1, stripped of all web/Rails/TypeScript content and rebuilt with Godot-specific agents.
 
 ## Installation
 
+Local plugin installation requires a marketplace wrapper. See the [installation guide](https://github.com/CuriousCrow123/godot-compound) for full setup steps.
+
 ```bash
-claude /plugin add /path/to/godot-compound
+# Quick version (after marketplace setup)
+claude plugin install godot-compound
 ```
 
 ## Commands
@@ -29,20 +32,26 @@ claude /plugin add /path/to/godot-compound
 | `/slfg` | Swarm-mode autonomous workflow |
 | `/changelog` | Create changelogs for recent merges |
 | `/triage` | Triage and prioritize issues |
+| `/reproduce-bug` | Reproduce bugs with headless launch and GUT tests |
 | `/report-bug` | Report a plugin bug |
 | `/resolve_todo_parallel` | Resolve todos in parallel |
-| `/resolve_parallel` | Resolve TODO comments in parallel |
 | `/heal-skill` | Fix skill documentation issues |
 | `/generate_command` | Generate new slash commands |
 
 ## Agents
 
-### Review
+### Review (Godot-Specific)
 
 | Agent | Description |
 |-------|-------------|
-| `gc-code-simplicity-reviewer` | Final pass for simplicity and minimalism |
-| `gc-pattern-recognition-specialist` | Analyze code for patterns and anti-patterns |
+| `gc-gdscript-reviewer` | Static typing, naming, member ordering, Resource mutation patterns |
+| `gc-resource-safety-reviewer` | .tres/.tscn integrity, .uid sidecars, shared Resource mutation |
+| `gc-godot-architecture-reviewer` | Scene composition, signals, autoloads, inheritance depth |
+| `gc-godot-performance-reviewer` | _process abuse, typed hotpaths, Server APIs, scene traversal |
+| `gc-godot-timing-reviewer` | Signal timing, await races, queue_free safety, call_deferred |
+| `gc-godot-export-verifier` | Export presets, asset integrity, platform gotchas |
+| `gc-code-simplicity-reviewer` | Final pass for simplicity and YAGNI |
+| `gc-pattern-recognition-specialist` | Design patterns, anti-patterns, naming conventions |
 
 ### Research
 
@@ -58,6 +67,7 @@ claude /plugin add /path/to/godot-compound
 
 | Agent | Description |
 |-------|-------------|
+| `gc-gdscript-lint` | Run gdformat + gdlint checks |
 | `gc-bug-reproduction-validator` | Reproduce and validate bug reports |
 | `gc-pr-comment-resolver` | Address PR comments and implement fixes |
 | `gc-spec-flow-analyzer` | Analyze user flows and identify spec gaps |
@@ -66,15 +76,15 @@ claude /plugin add /path/to/godot-compound
 
 | Skill | Description |
 |-------|-------------|
-| `brainstorming` | Explore requirements through collaborative dialogue |
+| `godot-patterns` | Scene architecture, GDScript quality, Resource system references |
+| `gdscript-lint` | gdformat + gdlint formatting and style checks |
+| `godot-setup` | Configure review agents for Godot projects |
 | `compound-docs` | Capture solved problems as documentation |
+| `brainstorming` | Explore requirements through collaborative dialogue |
 | `create-agent-skills` | Expert guidance for creating Claude Code skills |
 | `document-review` | Improve documents through structured review |
-| `file-todos` | File-based todo tracking |
 | `git-worktree` | Manage Git worktrees for parallel development |
 | `orchestrating-swarms` | Multi-agent swarm orchestration guide |
-| `resolve-pr-parallel` | Resolve PR comments in parallel |
-| `setup` | Configure review agents for your project |
 
 ## MCP Servers
 

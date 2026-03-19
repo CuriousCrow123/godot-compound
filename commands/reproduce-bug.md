@@ -1,102 +1,105 @@
 ---
 name: reproduce-bug
-description: Reproduce and investigate a bug using logs, console inspection, and browser screenshots
-argument-hint: "[GitHub issue number]"
+description: Reproduce and investigate a Godot bug using codebase analysis, headless game launch, and GUT tests
+argument-hint: "[GitHub issue number or bug description]"
 disable-model-invocation: true
 ---
-
-> **NOTE:** This command is pending rewrite for Godot. Web-specific examples below (Playwright, Rails console, AppSignal) are from the CE fork and will be replaced.
 
 # Reproduce Bug Command
 
 Look at github issue #$ARGUMENTS and read the issue description and comments.
 
-## Phase 1: Log Investigation
+## Phase 1: Codebase Investigation
 
-Run the following agents in parallel to investigate the bug:
+Investigate the bug using parallel research:
 
-1. Task rails-console-explorer(issue_description)
-2. Task appsignal-log-investigator(issue_description)
+1. Task gc-repo-research-analyst(issue_description) — search codebase for affected code
+2. Task gc-learnings-researcher(issue_description) — check docs/solutions/ for similar past issues
 
-Think about the places it could go wrong looking at the codebase. Look for logging output we can look for.
+Think about the places it could go wrong looking at the codebase:
+- Signal connections that could be missing or stale
+- Resource sharing issues (missing `.duplicate()`)
+- Scene tree timing issues (`_ready()` ordering, `call_deferred()`)
+- Node path fragility (hardcoded paths, missing `%UniqueNode`)
+- Autoload initialization order dependencies
 
-Run the agents again to find any logs that could help us reproduce the bug.
+## Phase 2: Error Reproduction
 
-Keep running these agents until you have a good idea of what is going on.
+### Step 1: Check for GDScript Errors
 
-## Phase 2: Visual Reproduction with Playwright
-
-If the bug is UI-related or involves user flows, use Playwright to visually reproduce it:
-
-### Step 1: Verify Server is Running
-
-```
-mcp__plugin_compound-engineering_pw__browser_navigate({ url: "http://localhost:3000" })
-mcp__plugin_compound-engineering_pw__browser_snapshot({})
-```
-
-If server not running, inform user to start `bin/dev`.
-
-### Step 2: Navigate to Affected Area
-
-Based on the issue description, navigate to the relevant page:
-
-```
-mcp__plugin_compound-engineering_pw__browser_navigate({ url: "http://localhost:3000/[affected_route]" })
-mcp__plugin_compound-engineering_pw__browser_snapshot({})
+```bash
+# Run gdtoolkit lint on affected files
+gdlint <affected-files>
+gdformat --check <affected-files>
 ```
 
-### Step 3: Capture Screenshots
+### Step 2: Headless Game Launch (if applicable)
 
-Take screenshots at each step of reproducing the bug:
+If the bug involves runtime behavior, try a headless launch to capture errors:
 
+```bash
+# Launch game headless and capture output
+godot --headless --path . 2>&1 | head -100
+
+# If specific scene is affected:
+godot --headless --path . --scene res://path/to/scene.tscn 2>&1 | head -100
 ```
-mcp__plugin_compound-engineering_pw__browser_take_screenshot({ filename: "bug-[issue]-step-1.png" })
+
+### Step 3: Run GUT Tests (if available)
+
+```bash
+# Check if GUT is installed
+test -d addons/gut && echo "GUT available" || echo "GUT not installed"
+
+# Run tests headless (if GUT available)
+godot --headless -s addons/gut/gut_cmdln.gd -gexit 2>&1
 ```
 
-### Step 4: Follow User Flow
+### Step 4: Trace Signal Flow
 
-Reproduce the exact steps from the issue:
+If the bug involves signals:
 
-1. **Read the issue's reproduction steps**
-2. **Execute each step using Playwright:**
-   - `browser_click` for clicking elements
-   - `browser_type` for filling forms
-   - `browser_snapshot` to see the current state
-   - `browser_take_screenshot` to capture evidence
+```bash
+# Find signal definitions
+grep -rn "signal " --include="*.gd" .
 
-3. **Check for console errors:**
-   ```
-   mcp__plugin_compound-engineering_pw__browser_console_messages({ level: "error" })
-   ```
+# Find signal connections
+grep -rn "\.connect(" --include="*.gd" .
 
-### Step 5: Capture Bug State
-
-When you reproduce the bug:
-
-1. Take a screenshot of the bug state
-2. Capture console errors
-3. Document the exact steps that triggered it
-
+# Find signal emissions
+grep -rn "\.emit(" --include="*.gd" .
 ```
-mcp__plugin_compound-engineering_pw__browser_take_screenshot({ filename: "bug-[issue]-reproduced.png" })
+
+### Step 5: Check Resource References
+
+If the bug involves resources:
+
+```bash
+# Find stale res:// references
+grep -rn "res://" --include="*.gd" --include="*.tscn" --include="*.tres" . | head -50
+
+# Check for missing .uid files
+find . -name "*.gd" -not -path "./.godot/*" | while read f; do
+  test -f "${f}.uid" || echo "Missing .uid: $f"
+done
 ```
 
 ## Phase 3: Document Findings
 
 **Reference Collection:**
 
-- [ ] Document all research findings with specific file paths (e.g., `app/services/example_service.rb:42`)
-- [ ] Include screenshots showing the bug reproduction
-- [ ] List console errors if any
+- [ ] Document all findings with specific file paths (e.g., `scripts/battle/combat_manager.gd:42`)
+- [ ] List GDScript errors or warnings from headless launch
+- [ ] List GUT test failures if any
+- [ ] Document signal flow trace if relevant
 - [ ] Document the exact reproduction steps
 
 ## Phase 4: Report Back
 
 Add a comment to the issue with:
 
-1. **Findings** - What you discovered about the cause
-2. **Reproduction Steps** - Exact steps to reproduce (verified)
-3. **Screenshots** - Visual evidence of the bug (upload captured screenshots)
-4. **Relevant Code** - File paths and line numbers
-5. **Suggested Fix** - If you have one
+1. **Findings** — What you discovered about the cause
+2. **Reproduction Steps** — Exact steps to reproduce (verified)
+3. **Relevant Code** — File paths and line numbers
+4. **Root Cause Analysis** — Signal issue, resource sharing, timing, etc.
+5. **Suggested Fix** — If you have one

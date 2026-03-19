@@ -70,8 +70,9 @@ ls .claude/skills/
 # 2. User's global skills (~/.claude/)
 ls ~/.claude/skills/
 
-# 3. compound-engineering plugin skills
-ls ~/.claude/plugins/cache/*/compound-engineering/*/skills/
+# 3. godot-compound plugin skills (and any other installed plugins)
+ls ~/.claude/plugins/cache/*/godot-compound/*/skills/ 2>/dev/null
+ls ~/.claude/plugins/cache/*/compound-engineering/*/skills/ 2>/dev/null
 
 # 4. ALL other installed plugins - check every plugin for skills
 find ~/.claude/plugins/cache -type d -name "skills" 2>/dev/null
@@ -80,7 +81,7 @@ find ~/.claude/plugins/cache -type d -name "skills" 2>/dev/null
 cat ~/.claude/plugins/installed_plugins.json
 ```
 
-**Important:** Check EVERY source. Don't assume compound-engineering is the only plugin. Use skills from ANY installed plugin that's relevant.
+**Important:** Check EVERY source. Don't assume godot-compound is the only plugin. Use skills from ANY installed plugin that's relevant.
 
 **Step 2: For each discovered skill, read its SKILL.md to understand what it does**
 
@@ -285,8 +286,8 @@ Return concrete, actionable recommendations."
 
 For any technologies/frameworks mentioned in the plan, query Context7:
 ```
-mcp__plugin_compound-engineering_context7__resolve-library-id: Find library ID for [framework]
-mcp__plugin_compound-engineering_context7__query-docs: Query documentation for specific patterns
+mcp__plugin_godot-compound_context7__resolve-library-id: Find library ID for [framework]
+mcp__plugin_godot-compound_context7__query-docs: Query documentation for specific patterns
 ```
 
 **Use WebSearch for current best practices:**
@@ -308,7 +309,8 @@ find .claude/agents -name "*.md" 2>/dev/null
 # 2. User's global agents (~/.claude/)
 find ~/.claude/agents -name "*.md" 2>/dev/null
 
-# 3. compound-engineering plugin agents (all subdirectories)
+# 3. godot-compound plugin agents (and any other installed plugins)
+find ~/.claude/plugins/cache/*/godot-compound/*/agents -name "*.md" 2>/dev/null
 find ~/.claude/plugins/cache/*/compound-engineering/*/agents -name "*.md" 2>/dev/null
 
 # 4. ALL other installed plugins - check every plugin for agents
@@ -324,15 +326,13 @@ cat ~/.claude/plugins/installed_plugins.json
 **Important:** Check EVERY source. Include agents from:
 - Project `.claude/agents/`
 - User's `~/.claude/agents/`
-- compound-engineering plugin (but SKIP workflow/ agents - only use review/, research/, design/, docs/)
+- godot-compound plugin (but SKIP workflow/ agents - only use review/, research/)
 - ALL other installed plugins (agent-sdk-dev, frontend-design, etc.)
 - Any local plugins
 
-**For compound-engineering plugin specifically:**
+**For godot-compound plugin specifically:**
 - USE: `agents/review/*` (all reviewers)
 - USE: `agents/research/*` (all researchers)
-- USE: `agents/design/*` (design agents)
-- USE: `agents/docs/*` (documentation agents)
 - SKIP: `agents/workflow/*` (these are workflow orchestrators, not reviewers)
 
 **Step 2: For each discovered agent, read its description**
