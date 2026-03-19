@@ -1,96 +1,57 @@
-# Compounding Engineering Plugin Development
+# Godot Compound Plugin
 
-## Versioning Requirements
+Godot 4 + GDScript development tools for Claude Code. Fork of Compound Engineering, stripped of all web/Rails/TypeScript content and namespaced under `/gc:`.
 
-**IMPORTANT**: Every change to this plugin MUST include updates to all three files:
+## Godot Conventions (inherited by all agents)
 
-1. **`.claude-plugin/plugin.json`** - Bump version using semver
-2. **`CHANGELOG.md`** - Document changes using Keep a Changelog format
-3. **`README.md`** - Verify/update component counts and tables
+- **Language:** GDScript only (no C#)
+- **Static typing is mandatory.** Every variable, parameter, and return type must be explicitly typed.
+- **Composition over inheritance.** Limit scene inheritance to one layer. Compose entities from single-purpose child nodes. Derive only from engine node types.
+- **"Call down, signal up."** Parents call methods on children. Children emit signals. Siblings communicate through a shared parent. Event Bus autoload for genuinely cross-system events only.
+- **`.tscn` files are read-only for agents.** Scene files have strict structure. Agents must never edit `.tscn` files directly.
+- **Resource safety:** Call `.duplicate()` on any `.tres` Resource that will be mutated at runtime. Prefer `preload()` over dynamic `load()`.
 
-### Version Bumping Rules
+## GDScript Style
 
-- **MAJOR** (1.0.0 → 2.0.0): Breaking changes, major reorganization
-- **MINOR** (1.0.0 → 1.1.0): New agents, commands, or skills
-- **PATCH** (1.0.0 → 1.0.1): Bug fixes, doc updates, minor improvements
+- **Naming:** snake_case for files/vars/functions, PascalCase for classes/nodes, UPPER_SNAKE_CASE for constants/enums, `_prefix` for pseudo-private, `is_`/`can_`/`has_` for booleans, past-tense for signals (`damage_taken`).
+- **Member ordering:** class_name/extends/docstring → signals → enums → constants → @export → public vars → _private vars → @onready → virtual methods → signal callbacks → public methods → private methods → inner classes.
 
-### Pre-Commit Checklist
+## Linting
 
-Before committing ANY changes:
+```bash
+gdformat --check .   # formatting
+gdlint .             # style rules
+```
 
-- [ ] Version bumped in `.claude-plugin/plugin.json`
-- [ ] CHANGELOG.md updated with changes
-- [ ] README.md component counts verified
-- [ ] README.md tables accurate (agents, commands, skills)
-- [ ] plugin.json description matches current counts
+## Command Namespace
 
-### Directory Structure
+All commands use `/gc:` prefix:
+- `/gc:plan` — Implementation planning with GUT/gdtoolkit references
+- `/gc:work` — Execution with Godot acceptance patterns
+- `/gc:review` — Multi-agent review with Godot agents
+- `/gc:compound` — Knowledge capture with Godot schema
+- `/gc:brainstorm` — Collaborative exploration (game design focus)
+
+## Versioning
+
+- **MAJOR**: Breaking changes
+- **MINOR**: New agents, commands, or skills
+- **PATCH**: Bug fixes, doc updates
+
+Update `.claude-plugin/plugin.json` and `CHANGELOG.md` with every change.
+
+## Directory Structure
 
 ```
 agents/
 ├── review/     # Code review agents
 ├── research/   # Research and analysis agents
-├── design/     # Design and UI agents
-├── workflow/   # Workflow automation agents
-└── docs/       # Documentation agents
+└── workflow/   # Workflow automation agents
 
 commands/
-├── ce/         # Core workflow commands (ce:plan, ce:review, etc.)
-├── workflows/  # Deprecated aliases for ce:* commands
+├── gc/         # Core workflow commands (gc:plan, gc:review, etc.)
 └── *.md        # Utility commands
 
 skills/
-└── *.md        # All skills at root level
+└── */          # Skills with SKILL.md + references/
 ```
-
-## Command Naming Convention
-
-**Workflow commands** use `ce:` prefix to unambiguously identify them as compound-engineering commands:
-- `/ce:plan` - Create implementation plans
-- `/ce:review` - Run comprehensive code reviews
-- `/ce:work` - Execute work items systematically
-- `/ce:compound` - Document solved problems
-- `/ce:brainstorm` - Explore requirements and approaches before planning
-
-**Why `ce:`?** Claude Code has built-in `/plan` and `/review` commands. The `ce:` namespace (short for compound-engineering) makes it immediately clear these commands belong to this plugin. The legacy `workflows:` prefix is still supported as deprecated aliases that forward to the `ce:*` equivalents.
-
-## Skill Compliance Checklist
-
-When adding or modifying skills, verify compliance with skill-creator spec:
-
-### YAML Frontmatter (Required)
-
-- [ ] `name:` present and matches directory name (lowercase-with-hyphens)
-- [ ] `description:` present and describes **what it does and when to use it** (per official spec: "Explains code with diagrams. Use when exploring how code works.")
-
-### Reference Links (Required if references/ exists)
-
-- [ ] All files in `references/` are linked as `[filename.md](./references/filename.md)`
-- [ ] All files in `assets/` are linked as `[filename](./assets/filename)`
-- [ ] All files in `scripts/` are linked as `[filename](./scripts/filename)`
-- [ ] No bare backtick references like `` `references/file.md` `` - use proper markdown links
-
-### Writing Style
-
-- [ ] Use imperative/infinitive form (verb-first instructions)
-- [ ] Avoid second person ("you should") - use objective language ("To accomplish X, do Y")
-
-### AskUserQuestion Usage
-
-- [ ] If the skill uses `AskUserQuestion`, it must include an "Interaction Method" preamble explaining the numbered-list fallback for non-Claude environments
-- [ ] Prefer avoiding `AskUserQuestion` entirely (see `brainstorming/SKILL.md` pattern) for skills intended to run cross-platform
-
-### Quick Validation Command
-
-```bash
-# Check for unlinked references in a skill
-grep -E '`(references|assets|scripts)/[^`]+`' skills/*/SKILL.md
-# Should return nothing if all refs are properly linked
-
-# Check description format - should describe what + when
-grep -E '^description:' skills/*/SKILL.md
-```
-
-## Documentation
-
-See `docs/solutions/plugin-versioning-requirements.md` for detailed versioning workflow.

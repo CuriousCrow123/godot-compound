@@ -1,15 +1,15 @@
-# CORA Documentation Schema
+# Godot Project Documentation Schema
 # This schema MUST be validated before writing any documentation file
 
 required_fields:
   module:
     type: string
-    description: "Module/area of CORA (e.g., 'Email Processing', 'Brief System', 'Authentication')"
+    description: "Module/area of the project (e.g., 'Battle System', 'World Map', 'UI')"
     examples:
-      - "Email Processing"
-      - "Brief System"
-      - "Assistant"
-      - "Authentication"
+      - "Battle System"
+      - "World Map"
+      - "Inventory"
+      - "UI"
 
   date:
     type: string
@@ -19,16 +19,19 @@ required_fields:
   problem_type:
     type: enum
     values:
-      - build_error          # Rails, bundle, compilation errors
+      - build_error          # GDScript parse errors, project compilation errors
       - test_failure         # Test failures, flaky tests
       - runtime_error        # Exceptions, crashes during execution
-      - performance_issue    # Slow queries, memory issues, N+1 queries
-      - database_issue       # Migration, query, schema problems
-      - security_issue       # Authentication, authorization, XSS, SQL injection
-      - ui_bug               # Frontend, Stimulus, Turbo issues
-      - integration_issue    # External service, API integration problems
-      - logic_error          # Business logic bugs
-      - developer_experience # DX issues: workflow, tooling, seed data, dev setup
+      - performance_issue    # Slow frames, memory issues, draw call problems
+      - signal_issue         # Signal connection errors, missing connections, circular signals
+      - scene_corruption     # Broken .tscn files, invalid node references, missing dependencies
+      - resource_error       # .tres load failures, shared resource mutation, missing preloads
+      - untyped_code         # Missing type annotations, unsafe property/method access
+      - security_issue       # Authentication, authorization, input validation
+      - ui_bug               # UI node layout, theme, Control issues
+      - integration_issue    # Plugin, addon, or external tool integration problems
+      - logic_error          # Game logic bugs
+      - developer_experience # DX issues: workflow, tooling, dev setup
       - workflow_issue       # Development process, missing steps, unclear practices
       - best_practice        # Documenting patterns and practices to follow
       - documentation_gap    # Missing or inadequate documentation
@@ -37,24 +40,24 @@ required_fields:
   component:
     type: enum
     values:
-      - rails_model          # ActiveRecord models
-      - rails_controller     # ActionController
-      - rails_view           # ERB templates, ViewComponent
-      - service_object       # Custom service classes
-      - background_job       # Sidekiq, Active Job
-      - database             # PostgreSQL, migrations, schema
-      - frontend_stimulus    # Stimulus JS controllers
-      - hotwire_turbo        # Turbo Streams, Turbo Drive
-      - email_processing     # Email handling, mailers
-      - brief_system         # Brief generation, summarization
-      - assistant            # AI assistant, prompts
-      - authentication       # Devise, user auth
-      - payments             # Stripe, billing
-      - development_workflow # Dev process, seed data, tooling
-      - testing_framework    # Test setup, fixtures, VCR
-      - documentation        # README, guides, inline docs
+      - gdscript             # GDScript files, class definitions
+      - scene_tree           # Scene structure, node hierarchy
+      - resource             # .tres resources, resource loading
+      - signal_system        # Signal connections, event bus
+      - ui_control           # Control nodes, UI layout
+      - physics              # Physics bodies, collision shapes
+      - tilemap              # TileMap, TileSet
+      - animation            # AnimationPlayer, AnimationTree
+      - audio                # AudioStreamPlayer, sound system
+      - shader               # Shader files, visual effects
+      - autoload             # Autoload singletons, global state
+      - plugin               # Editor plugins, addons
+      - project_settings     # project.godot, export settings
+      - development_workflow # Dev process, tooling
+      - testing_framework    # GUT tests, test setup
+      - documentation        # Guides, inline docs
       - tooling              # Scripts, generators, CLI tools
-    description: "CORA component involved"
+    description: "Godot component involved"
 
   symptoms:
     type: array[string]
@@ -62,45 +65,45 @@ required_fields:
     max_items: 5
     description: "Observable symptoms (error messages, visual issues, crashes)"
     examples:
-      - "N+1 query detected in brief generation"
-      - "Brief emails not appearing in summary"
-      - "Turbo Stream response returns 404"
+      - "Signal not reaching target node after scene change"
+      - "Shared resource modified across all instances"
+      - "Untyped variable causing runtime error"
 
   root_cause:
     type: enum
     values:
-      - missing_association  # Incorrect Rails associations
-      - missing_include      # Missing eager loading (N+1)
-      - missing_index        # Database performance issue
-      - wrong_api            # Using deprecated/incorrect Rails API
-      - scope_issue          # Incorrect query scope or filtering
-      - thread_violation     # Real-time unsafe operation
-      - async_timing         # Async/background job timing
+      - missing_signal_connection  # Signal not connected or wrong target
+      - shared_resource_mutation   # Mutating a shared .tres without .duplicate()
+      - missing_preload      # Using load() where preload() is needed
+      - scene_reference_broken # Invalid node path or missing dependency
+      - wrong_api            # Using deprecated/incorrect Godot API
+      - type_error           # Missing or wrong type annotation
+      - node_order_issue     # Wrong processing order or _ready() timing
+      - async_timing         # Coroutine/await timing issue
       - memory_leak          # Memory leak or excessive allocation
-      - config_error         # Configuration or environment issue
-      - logic_error          # Algorithm/business logic bug
+      - config_error         # Configuration or project setting issue
+      - logic_error          # Algorithm/game logic bug
       - test_isolation       # Test isolation or fixture issue
-      - missing_validation   # Missing model validation
-      - missing_permission   # Authorization check missing
+      - missing_validation   # Missing input validation
       - missing_workflow_step # Skipped or undocumented workflow step
       - inadequate_documentation # Missing or unclear documentation
       - missing_tooling      # Lacking helper scripts or automation
-      - incomplete_setup     # Missing seed data, fixtures, or config
+      - incomplete_setup     # Missing project config or setup
     description: "Fundamental cause of the problem"
 
   resolution_type:
     type: enum
     values:
-      - code_fix             # Fixed by changing source code
-      - migration            # Fixed by database migration
-      - config_change        # Fixed by changing configuration
+      - code_fix             # Fixed by changing GDScript source code
+      - scene_fix            # Fixed by editing .tscn scene structure
+      - resource_fix         # Fixed by editing .tres resource
+      - config_change        # Fixed by changing project.godot or settings
       - test_fix             # Fixed by correcting tests
-      - dependency_update    # Fixed by updating gem/dependency
+      - addon_update         # Fixed by updating addon/plugin
       - environment_setup    # Fixed by environment configuration
       - workflow_improvement # Improved development workflow or process
       - documentation_update # Added or updated documentation
       - tooling_addition     # Added helper script or automation
-      - seed_data_update     # Updated db/seeds.rb or fixtures
     description: "Type of fix applied"
 
   severity:
@@ -113,10 +116,10 @@ required_fields:
     description: "Impact severity"
 
 optional_fields:
-  rails_version:
+  godot_version:
     type: string
-    pattern: '^\d+\.\d+\.\d+$'
-    description: "Rails version where this was encountered (e.g., '7.1.0')"
+    pattern: '^\d+\.\d+(\.\d+)?$'
+    description: "Godot version where this was encountered (e.g., '4.6.1')"
 
   related_components:
     type: array[string]
@@ -127,13 +130,13 @@ optional_fields:
     max_items: 8
     description: "Searchable keywords (lowercase, hyphen-separated)"
     examples:
-      - "n-plus-one"
-      - "eager-loading"
-      - "test-isolation"
-      - "turbo-stream"
+      - "signal-connection"
+      - "resource-safety"
+      - "scene-corruption"
+      - "static-typing"
 
 validation_rules:
-  - "module must be a valid CORA module name"
+  - "module must be a valid project module name"
   - "date must be in YYYY-MM-DD format"
   - "problem_type must match one of the enum values"
   - "component must match one of the enum values"
@@ -145,32 +148,32 @@ validation_rules:
 
 # Example valid front matter:
 # ---
-# module: Email Processing
-# date: 2025-11-12
-# problem_type: performance_issue
-# component: rails_model
+# module: Battle System
+# date: 2026-03-19
+# problem_type: signal_issue
+# component: signal_system
 # symptoms:
-#   - N+1 query when loading email threads
-#   - Brief generation taking >5 seconds
-# root_cause: missing_include
-# rails_version: 7.1.2
+#   - Signal not reaching target node after scene change
+#   - Battle actions silently failing
+# root_cause: missing_signal_connection
+# godot_version: 4.6.1
 # resolution_type: code_fix
 # severity: high
-# tags: [n-plus-one, eager-loading, performance]
+# tags: [signal-connection, battle, scene-change]
 # ---
 #
 # Example DX issue front matter:
 # ---
 # module: Development Workflow
-# date: 2025-11-13
+# date: 2026-03-19
 # problem_type: developer_experience
 # component: development_workflow
 # symptoms:
-#   - No example data for new feature in development
-#   - Rails db:seed doesn't demonstrate new capabilities
+#   - gdlint not catching untyped declarations
+#   - CI passing with unsafe code
 # root_cause: incomplete_setup
-# rails_version: 7.1.2
-# resolution_type: seed_data_update
+# godot_version: 4.6.1
+# resolution_type: config_change
 # severity: low
-# tags: [seed-data, dx, workflow]
+# tags: [gdlint, static-typing, dx, workflow]
 # ---

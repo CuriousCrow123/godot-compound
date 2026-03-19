@@ -5,6 +5,8 @@ argument-hint: "[GitHub issue number]"
 disable-model-invocation: true
 ---
 
+> **NOTE:** This command is pending rewrite for Godot. Web-specific examples below (Playwright, Rails console, AppSignal) are from the CE fork and will be replaced.
+
 # Reproduce Bug Command
 
 Look at github issue #$ARGUMENTS and read the issue description and comments.

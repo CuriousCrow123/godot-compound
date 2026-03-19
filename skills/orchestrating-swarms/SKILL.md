@@ -206,7 +206,7 @@ Teammate({ operation: "spawnTeam", team_name: "my-project" })
 Task({
   team_name: "my-project",        // Required: which team to join
   name: "security-reviewer",      // Required: teammate's name
-  subagent_type: "security-sentinel",
+  subagent_type: "godot-compound:review:gc-code-simplicity-reviewer",
   prompt: "Review all authentication code for vulnerabilities. Send findings to team-lead via Teammate write.",
   run_in_background: true         // Teammates usually run in background
 })
@@ -318,55 +318,50 @@ From the `compound-engineering` plugin (examples):
 ```javascript
 // Security review
 Task({
-  subagent_type: "compound-engineering:review:security-sentinel",
+  subagent_type: "godot-compound:review:security-sentinel",
   description: "Security audit",
   prompt: "Audit this PR for security vulnerabilities"
 })
 
 // Performance review
 Task({
-  subagent_type: "compound-engineering:review:performance-oracle",
+  subagent_type: "godot-compound:review:performance-oracle",
   description: "Performance check",
   prompt: "Analyze this code for performance bottlenecks"
 })
 
-// Rails code review
+// GDScript code review
 Task({
-  subagent_type: "compound-engineering:review:kieran-rails-reviewer",
-  description: "Rails review",
-  prompt: "Review this Rails code for best practices"
+  subagent_type: "gc:review:gc-gdscript-reviewer",
+  description: "GDScript review",
+  prompt: "Review this GDScript code for best practices"
 })
 
 // Architecture review
 Task({
-  subagent_type: "compound-engineering:review:architecture-strategist",
+  subagent_type: "gc:review:gc-pattern-recognition-specialist",
   description: "Architecture review",
-  prompt: "Review the system architecture of the authentication module"
+  prompt: "Review the system architecture of the battle module"
 })
 
 // Code simplicity
 Task({
-  subagent_type: "compound-engineering:review:code-simplicity-reviewer",
+  subagent_type: "godot-compound:review:code-simplicity-reviewer",
   description: "Simplicity check",
   prompt: "Check if this implementation can be simplified"
 })
 ```
 
-**All review agents from compound-engineering:**
-- `agent-native-reviewer` - Ensures features work for agents too
-- `architecture-strategist` - Architectural compliance
-- `code-simplicity-reviewer` - YAGNI and minimalism
-- `data-integrity-guardian` - Database and data safety
-- `data-migration-expert` - Migration validation
-- `deployment-verification-agent` - Pre-deploy checklists
-- `dhh-rails-reviewer` - DHH/37signals Rails style
-- `julik-frontend-races-reviewer` - JavaScript race conditions
-- `kieran-python-reviewer` - Python best practices
-- `kieran-rails-reviewer` - Rails best practices
-- `kieran-typescript-reviewer` - TypeScript best practices
-- `pattern-recognition-specialist` - Design patterns and anti-patterns
-- `performance-oracle` - Performance analysis
-- `security-sentinel` - Security vulnerabilities
+**All review agents from godot-compound:**
+- `gc-pattern-recognition-specialist` - Architectural compliance
+- `gc-code-simplicity-reviewer` - YAGNI and minimalism
+- `gc-code-simplicity-reviewer` - Data and resource safety
+- `gc-gdscript-reviewer` - GDScript best practices
+- `gc-godot-architecture-reviewer` - Godot scene/node architecture
+- `gc-pattern-recognition-specialist` - Design patterns and anti-patterns
+- `gc-pattern-recognition-specialist` - Performance analysis
+- `gc-resource-safety-reviewer` - Resource and .tres/.tscn safety
+- `gc-code-simplicity-reviewer` - Security vulnerabilities
 
 ### Research Agents
 ```javascript
@@ -392,21 +387,12 @@ Task({
 })
 ```
 
-**All research agents:**
-- `best-practices-researcher` - External best practices
-- `framework-docs-researcher` - Framework documentation
-- `git-history-analyzer` - Code archaeology
-- `learnings-researcher` - Search docs/solutions/
-- `repo-research-analyst` - Repository patterns
-
-### Design Agents
-```javascript
-Task({
-  subagent_type: "compound-engineering:design:figma-design-sync",
-  description: "Sync with Figma",
-  prompt: "Compare implementation with Figma design at [URL]"
-})
-```
+**All research agents from godot-compound:**
+- `gc-best-practices-researcher` - External best practices
+- `gc-framework-docs-researcher` - Framework documentation
+- `gc-git-history-analyzer` - Code archaeology
+- `gc-learnings-researcher` - Search docs/solutions/
+- `gc-repo-research-analyst` - Repository patterns
 
 ### Workflow Agents
 ```javascript
@@ -798,7 +784,7 @@ Teammate({ operation: "spawnTeam", team_name: "code-review" })
 Task({
   team_name: "code-review",
   name: "security",
-  subagent_type: "compound-engineering:review:security-sentinel",
+  subagent_type: "godot-compound:review:security-sentinel",
   prompt: "Review the PR for security vulnerabilities. Focus on: SQL injection, XSS, auth bypass. Send findings to team-lead.",
   run_in_background: true
 })
@@ -806,7 +792,7 @@ Task({
 Task({
   team_name: "code-review",
   name: "performance",
-  subagent_type: "compound-engineering:review:performance-oracle",
+  subagent_type: "godot-compound:review:performance-oracle",
   prompt: "Review the PR for performance issues. Focus on: N+1 queries, memory leaks, slow algorithms. Send findings to team-lead.",
   run_in_background: true
 })
@@ -814,7 +800,7 @@ Task({
 Task({
   team_name: "code-review",
   name: "simplicity",
-  subagent_type: "compound-engineering:review:code-simplicity-reviewer",
+  subagent_type: "godot-compound:review:code-simplicity-reviewer",
   prompt: "Review the PR for unnecessary complexity. Focus on: over-engineering, premature abstraction, YAGNI violations. Send findings to team-lead.",
   run_in_background: true
 })
@@ -1431,7 +1417,7 @@ Teammate({ operation: "spawnTeam", team_name: "pr-review-123", description: "Rev
 Task({
   team_name: "pr-review-123",
   name: "security",
-  subagent_type: "compound-engineering:review:security-sentinel",
+  subagent_type: "godot-compound:review:security-sentinel",
   prompt: `Review PR #123 for security vulnerabilities.
 
   Focus on:
@@ -1448,7 +1434,7 @@ Task({
 Task({
   team_name: "pr-review-123",
   name: "perf",
-  subagent_type: "compound-engineering:review:performance-oracle",
+  subagent_type: "godot-compound:review:performance-oracle",
   prompt: `Review PR #123 for performance issues.
 
   Focus on:
@@ -1464,7 +1450,7 @@ Task({
 Task({
   team_name: "pr-review-123",
   name: "arch",
-  subagent_type: "compound-engineering:review:architecture-strategist",
+  subagent_type: "godot-compound:review:architecture-strategist",
   prompt: `Review PR #123 for architectural concerns.
 
   Focus on:
@@ -1547,7 +1533,7 @@ Task({
 Task({
   team_name: "feature-oauth",
   name: "reviewer",
-  subagent_type: "compound-engineering:review:security-sentinel",
+  subagent_type: "godot-compound:review:security-sentinel",
   prompt: "Wait for task #5 to unblock. Review the complete OAuth implementation for security. Send final assessment to team-lead.",
   run_in_background: true
 })

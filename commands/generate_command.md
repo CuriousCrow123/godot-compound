@@ -28,12 +28,9 @@ Create a new slash command in `.claude/commands/` for the requested task.
 **Web & APIs:**
 - WebFetch, WebSearch - research documentation
 - GitHub (gh cli) - PRs, issues, reviews
-- Playwright - browser automation, screenshots
 
 **Integrations:**
-- AppSignal - logs and monitoring
 - Context7 - framework docs
-- Stripe, Todoist, Featurebase (if relevant)
 
 ## Best Practices
 
@@ -117,8 +114,7 @@ Implement #$ARGUMENTS following these steps:
    - Ensure code follows CLAUDE.md conventions
 
 4. Verify
-   - Run tests: `bin/rails test`
-   - Run linter: `bundle exec standardrb`
+   - Run linter: `gdformat --check . && gdlint .`
    - Check changes with git diff
 
 5. Commit (optional)

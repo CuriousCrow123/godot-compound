@@ -1,28 +1,17 @@
 {
-  "name": "compound-engineering",
-  "version": "2.38.1",
-  "description": "AI-powered development tools. 29 agents, 22 commands, 20 skills, 1 MCP server for code review, research, design, and workflow automation.",
-  "author": {
-    "name": "Kieran Klaassen",
-    "email": "kieran@every.to",
-    "url": "https://github.com/kieranklaassen"
-  },
-  "homepage": "https://every.to/source-code/my-ai-had-already-fixed-the-code-before-i-saw-it",
-  "repository": "https://github.com/EveryInc/compound-engineering-plugin",
+  "name": "godot-compound",
+  "version": "0.1.0",
+  "description": "Godot 4 + GDScript development tools. Agents, skills, and commands for the Plan → Work → Review → Compound loop.",
+  "author": "Alan",
   "license": "MIT",
+  "repository": "https://github.com/CuriousCrow123/godot-compound",
   "keywords": [
-    "ai-powered",
-    "compound-engineering",
-    "workflow-automation",
+    "godot",
+    "gdscript",
+    "game-development",
     "code-review",
-    "rails",
-    "ruby",
-    "python",
-    "typescript",
-    "knowledge-management",
-    "image-generation",
-    "agent-browser",
-    "browser-automation"
+    "workflow-automation",
+    "knowledge-management"
   ],
   "mcpServers": {
     "context7": {

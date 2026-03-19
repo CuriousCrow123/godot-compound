@@ -71,8 +71,7 @@ Extract from conversation history:
 
 **Environment details:**
 
-- Rails version
-- Stage (0-6 or post-implementation)
+- Godot version
 - OS version
 - File/line references
 
@@ -83,7 +82,7 @@ I need a few details to document this properly:
 
 1. Which module had this issue? [ModuleName]
 2. What was the exact error message or symptom?
-3. What stage were you in? (0-6 or post-implementation)
+3. What were you working on when this occurred?
 
 [Continue after user provides details]
 ```
@@ -327,7 +326,7 @@ User selects this when the solution represents the start of a new learning domai
 
 Action:
 1. Prompt: "What should the new skill be called? (e.g., stripe-billing, email-processing)"
-2. Run `python3 .claude/skills/skill-creator/scripts/init_skill.py [skill-name]`
+2. Create the skill directory structure manually under `.claude/skills/[skill-name]/`
 3. Create initial reference files with this solution as first example
 4. Confirm: "✓ Created new [skill-name] skill with this solution as first example"
 
@@ -448,44 +447,44 @@ Documentation is successful when ALL of the following are true:
 
 ## Example Scenario
 
-**User:** "That worked! The N+1 query is fixed."
+**User:** "That worked! The signal connection is fixed."
 
 **Skill activates:**
 
 1. **Detect confirmation:** "That worked!" triggers auto-invoke
 2. **Gather context:**
-   - Module: Brief System
-   - Symptom: Brief generation taking >5 seconds, N+1 query when loading email threads
-   - Failed attempts: Added pagination (didn't help), checked background job performance
-   - Solution: Added eager loading with `includes(:emails)` on Brief model
-   - Root cause: Missing eager loading causing separate database query per email thread
+   - Module: Battle System
+   - Symptom: Battle actions silently failing after scene transition
+   - Failed attempts: Checked signal names (correct), verified node paths
+   - Solution: Reconnected signals in `_ready()` after scene change since connections are lost
+   - Root cause: Signal connections not persisting across scene changes
 3. **Check existing:** No similar issue found
-4. **Generate filename:** `n-plus-one-brief-generation-BriefSystem-20251110.md`
+4. **Generate filename:** `signal-lost-on-scene-change-BattleSystem-20260319.md`
 5. **Validate YAML:**
    ```yaml
-   module: Brief System
-   date: 2025-11-10
-   problem_type: performance_issue
-   component: rails_model
+   module: Battle System
+   date: 2026-03-19
+   problem_type: signal_issue
+   component: signal_system
    symptoms:
-     - "N+1 query when loading email threads"
-     - "Brief generation taking >5 seconds"
-   root_cause: missing_include
+     - "Battle actions silently failing after scene transition"
+     - "Signal callbacks not firing on re-entered scenes"
+   root_cause: missing_signal_connection
    severity: high
-   tags: [n-plus-one, eager-loading, performance]
+   tags: [signal-connection, scene-change, battle]
    ```
-   ✅ Valid
+   Valid
 6. **Create documentation:**
-   - `docs/solutions/performance-issues/n-plus-one-brief-generation-BriefSystem-20251110.md`
+   - `docs/solutions/signal-issues/signal-lost-on-scene-change-BattleSystem-20260319.md`
 7. **Cross-reference:** None needed (no similar issues)
 
 **Output:**
 
 ```
-✓ Solution documented
+Solution documented
 
 File created:
-- docs/solutions/performance-issues/n-plus-one-brief-generation-BriefSystem-20251110.md
+- docs/solutions/signal-issues/signal-lost-on-scene-change-BattleSystem-20260319.md
 
 What's next?
 1. Continue workflow (recommended)

@@ -1,14 +1,14 @@
 ---
 module: [Module name or "System" for system-wide]
 date: [YYYY-MM-DD]
-problem_type: [build_error|test_failure|runtime_error|performance_issue|database_issue|security_issue|ui_bug|integration_issue|logic_error]
-component: [rails_model|rails_controller|rails_view|service_object|background_job|database|frontend_stimulus|hotwire_turbo|email_processing|brief_system|assistant|authentication|payments]
+problem_type: [parse_error|runtime_error|performance_issue|scene_corruption|resource_error|import_error|ui_bug|signal_issue|logic_error|integration_issue]
+component: [scene_tree|resource_system|signal_wiring|physics_collision|animation_system|navigation|tilemap|audio|input_system|ui_controls|autoload|save_load|gdscript_tooling|project_config]
 symptoms:
   - [Observable symptom 1 - specific error message or behavior]
   - [Observable symptom 2 - what user actually saw/experienced]
-root_cause: [missing_association|missing_include|missing_index|wrong_api|scope_issue|thread_violation|async_timing|memory_leak|config_error|logic_error|test_isolation|missing_validation|missing_permission]
-rails_version: [7.1.2 - optional]
-resolution_type: [code_fix|migration|config_change|test_fix|dependency_update|environment_setup]
+root_cause: [resource_sharing|uid_mismatch|scene_structure_invalid|node_path_fragile|signal_disconnected|autoload_order|untyped_code|logic_error|api_misuse|process_callback_abuse|config_error|import_cache_stale|missing_dependency]
+godot_version: [4.6.1 - optional]
+resolution_type: [code_fix|scene_fix|config_change|resource_fix|dependency_update|environment_setup|workflow_improvement|architecture_change]
 severity: [critical|high|medium|low]
 tags: [keyword1, keyword2, keyword3]
 ---
@@ -20,8 +20,8 @@ tags: [keyword1, keyword2, keyword3]
 
 ## Environment
 - Module: [Name or "System-wide"]
-- Rails Version: [e.g., 7.1.2]
-- Affected Component: [e.g., "Email Processing model", "Brief System service", "Authentication controller"]
+- Godot Version: [e.g., 4.6.1]
+- Affected Component: [e.g., "BattleScene scene tree", "SaveManager autoload", "PlayerStats resource"]
 - Date: [YYYY-MM-DD when this was solved]
 
 ## Symptoms
@@ -47,7 +47,7 @@ tags: [keyword1, keyword2, keyword3]
 [The actual fix that worked - provide specific details]
 
 **Code changes** (if applicable):
-```ruby
+```gdscript
 # Before (broken):
 [Show the problematic code]
 
@@ -55,10 +55,10 @@ tags: [keyword1, keyword2, keyword3]
 [Show the corrected code with explanation]
 ```
 
-**Database migration** (if applicable):
-```ruby
-# Migration change:
-[Show what was changed in the migration]
+**Scene changes** (if applicable, describe manually):
+```
+# Scene modification:
+[Describe what was changed in the scene tree — do not edit .tscn directly]
 ```
 
 **Commands run** (if applicable):
@@ -72,7 +72,7 @@ tags: [keyword1, keyword2, keyword3]
 [Technical explanation of:]
 1. What was the ROOT CAUSE of the problem?
 2. Why does the solution address this root cause?
-3. What was the underlying issue (API misuse, configuration error, Rails version issue, etc.)?
+3. What was the underlying issue (API misuse, configuration error, Godot version issue, etc.)?
 
 [Be detailed enough that future developers understand the "why", not just the "what"]
 

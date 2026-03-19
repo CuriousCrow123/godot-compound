@@ -108,7 +108,7 @@ Links to errors, tests, PRs, documentation, similar issues.
 
 - **PR:** #1287
 - **Related issue:** #456
-- **Error log:** [link to AppSignal incident]
+- **Error log:** [link to error log or Godot output]
 - **Documentation:** [relevant docs]
 - **Similar patterns:** Issue #200 (completed, ref for approach)
 

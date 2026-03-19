@@ -1,21 +1,21 @@
 # YAML Frontmatter Schema
 
-**See `.claude/skills/codify-docs/schema.yaml` for the complete schema specification.**
+**See `skills/compound-docs/schema.yaml` for the complete schema specification.**
 
 ## Required Fields
 
-- **module** (string): Module name (e.g., "EmailProcessing") or "System" for system-wide issues
+- **module** (string): Module name (e.g., "BattleSystem") or "System" for system-wide issues
 - **date** (string): ISO 8601 date (YYYY-MM-DD)
-- **problem_type** (enum): One of [build_error, test_failure, runtime_error, performance_issue, database_issue, security_issue, ui_bug, integration_issue, logic_error, developer_experience, workflow_issue, best_practice, documentation_gap]
-- **component** (enum): One of [rails_model, rails_controller, rails_view, service_object, background_job, database, frontend_stimulus, hotwire_turbo, email_processing, brief_system, assistant, authentication, payments, development_workflow, testing_framework, documentation, tooling]
+- **problem_type** (enum): One of [parse_error, runtime_error, performance_issue, scene_corruption, resource_error, import_error, ui_bug, signal_issue, logic_error, integration_issue, developer_experience, workflow_issue, best_practice]
+- **component** (enum): One of [scene_tree, resource_system, signal_wiring, physics_collision, animation_system, navigation, tilemap, audio, input_system, ui_controls, autoload, save_load, gdscript_tooling, project_config]
 - **symptoms** (array): 1-5 specific observable symptoms
-- **root_cause** (enum): One of [missing_association, missing_include, missing_index, wrong_api, scope_issue, thread_violation, async_timing, memory_leak, config_error, logic_error, test_isolation, missing_validation, missing_permission, missing_workflow_step, inadequate_documentation, missing_tooling, incomplete_setup]
-- **resolution_type** (enum): One of [code_fix, migration, config_change, test_fix, dependency_update, environment_setup, workflow_improvement, documentation_update, tooling_addition, seed_data_update]
+- **root_cause** (enum): One of [resource_sharing, uid_mismatch, scene_structure_invalid, node_path_fragile, signal_disconnected, autoload_order, untyped_code, logic_error, api_misuse, process_callback_abuse, config_error, import_cache_stale, missing_dependency]
+- **resolution_type** (enum): One of [code_fix, scene_fix, config_change, resource_fix, dependency_update, environment_setup, workflow_improvement, architecture_change, pattern_adoption]
 - **severity** (enum): One of [critical, high, medium, low]
 
 ## Optional Fields
 
-- **rails_version** (string): Rails version in X.Y.Z format
+- **godot_version** (string): Godot version in X.Y.Z format
 - **tags** (array): Searchable keywords (lowercase, hyphen-separated)
 
 ## Validation Rules
@@ -24,25 +24,25 @@
 2. Enum fields must match allowed values exactly (case-sensitive)
 3. symptoms must be YAML array with 1-5 items
 4. date must match YYYY-MM-DD format
-5. rails_version (if provided) must match X.Y.Z format
+5. godot_version (if provided) must match X.Y.Z format
 6. tags should be lowercase, hyphen-separated
 
 ## Example
 
 ```yaml
 ---
-module: Email Processing
-date: 2025-11-12
-problem_type: performance_issue
-component: rails_model
+module: BattleSystem
+date: 2026-03-19
+problem_type: resource_error
+component: resource_system
 symptoms:
-  - "N+1 query when loading email threads"
-  - "Brief generation taking >5 seconds"
-root_cause: missing_include
-rails_version: 7.1.2
+  - "Shared Resource mutated across all instances"
+  - "Enemy stats changing when player stats modified"
+root_cause: resource_sharing
+godot_version: 4.6.1
 resolution_type: code_fix
 severity: high
-tags: [n-plus-one, eager-loading, performance]
+tags: [resource-sharing, duplicate, tres]
 ---
 ```
 
@@ -50,16 +50,16 @@ tags: [n-plus-one, eager-loading, performance]
 
 Based on `problem_type`, documentation is filed in:
 
-- **build_error** → `docs/solutions/build-errors/`
-- **test_failure** → `docs/solutions/test-failures/`
+- **parse_error** → `docs/solutions/parse-errors/`
 - **runtime_error** → `docs/solutions/runtime-errors/`
 - **performance_issue** → `docs/solutions/performance-issues/`
-- **database_issue** → `docs/solutions/database-issues/`
-- **security_issue** → `docs/solutions/security-issues/`
+- **scene_corruption** → `docs/solutions/scene-corruption/`
+- **resource_error** → `docs/solutions/resource-errors/`
+- **import_error** → `docs/solutions/import-errors/`
 - **ui_bug** → `docs/solutions/ui-bugs/`
-- **integration_issue** → `docs/solutions/integration-issues/`
+- **signal_issue** → `docs/solutions/signal-issues/`
 - **logic_error** → `docs/solutions/logic-errors/`
+- **integration_issue** → `docs/solutions/integration-issues/`
 - **developer_experience** → `docs/solutions/developer-experience/`
 - **workflow_issue** → `docs/solutions/workflow-issues/`
 - **best_practice** → `docs/solutions/best-practices/`
-- **documentation_gap** → `docs/solutions/documentation-gaps/`

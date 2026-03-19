@@ -10,7 +10,7 @@ argument-hint: "[path to plan file]"
 
 **Note: The current year is 2026.** Use this when searching for recent documentation and best practices.
 
-This command takes an existing plan (from `/ce:plan`) and enhances each section with parallel research agents. Each major element gets its own dedicated research sub-agent to find:
+This command takes an existing plan (from `/gc:plan`) and enhances each section with parallel research agents. Each major element gets its own dedicated research sub-agent to find:
 - Best practices and industry patterns
 - Performance optimizations
 - UI/UX improvements (if applicable)
@@ -131,13 +131,11 @@ The skill tells you what to do - follow it. Execute the skill completely."
 
 **Example spawns:**
 ```
-Task general-purpose: "Use the dhh-rails-style skill at ~/.claude/plugins/.../dhh-rails-style. Read SKILL.md and apply it to: [Rails sections of plan]"
+Task general-purpose: "Use the brainstorming skill at ~/.claude/skills/brainstorming. Read SKILL.md and apply it to: [design sections of plan]"
 
-Task general-purpose: "Use the frontend-design skill at ~/.claude/plugins/.../frontend-design. Read SKILL.md and apply it to: [UI sections of plan]"
+Task general-purpose: "Use the compound-docs skill at ~/.claude/skills/compound-docs. Read SKILL.md and apply it to: [documentation sections of plan]"
 
-Task general-purpose: "Use the agent-native-architecture skill at ~/.claude/plugins/.../agent-native-architecture. Read SKILL.md and apply it to: [agent/tool sections of plan]"
-
-Task general-purpose: "Use the security-patterns skill at ~/.claude/skills/security-patterns. Read SKILL.md and apply it to: [full plan]"
+Task general-purpose: "Use the create-agent-skills skill at ~/.claude/skills/create-agent-skills. Read SKILL.md and apply it to: [agent/skill sections of plan]"
 ```
 
 **No limit on skill sub-agents. Spawn one for every skill that could possibly be relevant.**
@@ -145,13 +143,13 @@ Task general-purpose: "Use the security-patterns skill at ~/.claude/skills/secur
 ### 3. Discover and Apply Learnings/Solutions
 
 <thinking>
-Check for documented learnings from /ce:compound. These are solved problems stored as markdown files. Spawn a sub-agent for each learning to check if it's relevant.
+Check for documented learnings from /gc:compound. These are solved problems stored as markdown files. Spawn a sub-agent for each learning to check if it's relevant.
 </thinking>
 
 **LEARNINGS LOCATION - Check these exact folders:**
 
 ```
-docs/solutions/           <-- PRIMARY: Project-level learnings (created by /ce:compound)
+docs/solutions/           <-- PRIMARY: Project-level learnings (created by /gc:compound)
 ├── performance-issues/
 │   └── *.md
 ├── debugging-patterns/
@@ -370,7 +368,7 @@ Wait for ALL parallel agents to complete - skills, research agents, review agent
 **Collect outputs from ALL sources:**
 
 1. **Skill-based sub-agents** - Each skill's full output (code examples, patterns, recommendations)
-2. **Learnings/Solutions sub-agents** - Relevant documented learnings from /ce:compound
+2. **Learnings/Solutions sub-agents** - Relevant documented learnings from /gc:compound
 3. **Research agents** - Best practices, documentation, real-world examples
 4. **Review agents** - All feedback from every reviewer (architecture, security, performance, simplicity, etc.)
 5. **Context7 queries** - Framework documentation and patterns
@@ -481,14 +479,14 @@ After writing the enhanced plan, use the **AskUserQuestion tool** to present the
 **Options:**
 1. **View diff** - Show what was added/changed
 2. **Run `/technical_review`** - Get feedback from reviewers on enhanced plan
-3. **Start `/ce:work`** - Begin implementing this enhanced plan
+3. **Start `/gc:work`** - Begin implementing this enhanced plan
 4. **Deepen further** - Run another round of research on specific sections
 5. **Revert** - Restore original plan (if backup exists)
 
 Based on selection:
 - **View diff** → Run `git diff [plan_path]` or show before/after
 - **`/technical_review`** → Call the /technical_review command with the plan file path
-- **`/ce:work`** → Call the /ce:work command with the plan file path
+- **`/gc:work`** → Call the /gc:work command with the plan file path
 - **Deepen further** → Ask which sections need more research, then re-run those agents
 - **Revert** → Restore from git or backup
 
