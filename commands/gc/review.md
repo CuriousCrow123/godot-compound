@@ -80,7 +80,37 @@ Additionally, always run these regardless of settings:
 
 </parallel_tasks>
 
-<!-- Conditional agents placeholder: will be populated in Phase 2 with Godot-specific review agents -->
+#### Conditional Godot Agents
+
+Check the changed files to determine if specialized Godot agents should run:
+
+```bash
+# Get list of changed files
+changed_files=$(git diff --name-only HEAD~1..HEAD 2>/dev/null || git diff --name-only main..HEAD)
+```
+
+**Resource Safety Review** — if any `.tres`, `.tscn`, or `.uid` files changed:
+```
+if echo "$changed_files" | grep -qE '\.(tres|tscn|uid)$'; then
+  Task gc-resource-safety-reviewer(PR content + changed resource files)
+fi
+```
+
+**Export Verification** — if export presets or `project.godot` changed:
+```
+if echo "$changed_files" | grep -qE '(export_presets\.cfg|project\.godot)$'; then
+  Task gc-godot-export-verifier(PR content + changed config files)
+fi
+```
+
+**Architecture Review** — if new scenes created or autoload configuration changed:
+```
+if echo "$changed_files" | grep -qE '\.tscn$' || echo "$changed_files" | grep -q 'project.godot'; then
+  Task gc-godot-architecture-reviewer(PR content + changed scenes)
+fi
+```
+
+These conditional agents run in parallel with the standard review agents above.
 
 ### 2. Ultra-Thinking Deep Dive Phases
 
@@ -293,7 +323,7 @@ Each todo must include:
 - **Findings**: Discoveries from agents with evidence/location
 - **Proposed Solutions**: 2-3 options, each with pros/cons/effort/risk
 - **Recommended Action**: (Filled during triage, leave blank initially)
-- **Technical Details**: Affected files, components, database changes
+- **Technical Details**: Affected files, scenes, resources, components
 - **Acceptance Criteria**: Testable checklist items
 - **Work Log**: Dated record with actions and learnings
 - **Resources**: Links to PR, issues, documentation, similar patterns
@@ -416,11 +446,24 @@ After presenting the Summary Report, offer to run linting:
 
 ```markdown
 **"Want to run GDScript quality checks?"**
-1. Yes - run `gdformat --check . && gdlint .`
+1. Yes - run linting and tests
 2. No - skip
 ```
 
-<!-- Phase 2: Add GUT test runner integration here -->
+**If yes, run in sequence:**
+
+```bash
+# 1. Linting
+gdformat --check . && gdlint .
+
+# 2. GUT tests (if GUT is installed)
+if [ -d "addons/gut" ]; then
+  godot --headless -s addons/gut/gut_cmdln.gd -gexit
+fi
+
+# 3. Headless error check (launch game briefly to catch runtime errors)
+timeout 10 godot --headless --quit-after 5 2>&1 | grep -i "error\|warning" || echo "No runtime errors detected"
+```
 
 ### Important: P1 Findings Block Merge
 

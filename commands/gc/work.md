@@ -103,15 +103,15 @@ This command takes a work document (plan, specification, or todo file) and execu
 
    | Question | What to do |
    |----------|------------|
-   | **What fires when this runs?** Callbacks, middleware, observers, event handlers — trace two levels out from your change. | Read the actual code (not docs) for callbacks on models you touch, middleware in the request chain, `after_*` hooks. |
-   | **Do my tests exercise the real chain?** If every dependency is mocked, the test proves your logic works *in isolation* — it says nothing about the interaction. | Write at least one integration test that uses real objects through the full callback/middleware chain. No mocks for the layers that interact. |
-   | **Can failure leave orphaned state?** If your code persists state (DB row, cache, file) before calling an external service, what happens when the service fails? Does retry create duplicates? | Trace the failure path with real objects. If state is created before the risky call, test that failure cleans up or that retry is idempotent. |
-   | **What other interfaces expose this?** Mixins, DSLs, alternative entry points (Agent vs Chat vs ChatMethods). | Grep for the method/behavior in related classes. If parity is needed, add it now — not as a follow-up. |
-   | **Do error strategies align across layers?** Retry middleware + application fallback + framework error handling — do they conflict or create double execution? | List the specific error classes at each layer. Verify your rescue list matches what the lower layer actually raises. |
+   | **What fires when this runs?** Signals, `_notification()` callbacks, autoload methods — trace two levels out from your change. | Read the actual code for signal connections on nodes you touch, `_ready()`/`_process()` chains, and autoload dependencies. |
+   | **Do my tests exercise the real chain?** If every dependency is doubled, the GUT test proves your logic works *in isolation* — it says nothing about signal flow across scenes. | Write at least one integration test that uses real scene instances through the full signal chain. No doubles for the layers that interact. |
+   | **Can failure leave orphaned state?** If your code mutates a `.tres` Resource, autoload state, or save file before a risky operation, what happens on failure? Does retry corrupt data? | Trace the failure path with real objects. If state is mutated before the risky call, test that failure cleans up or that retry is idempotent. Call `.duplicate()` on shared Resources before mutation. |
+   | **What other scenes/autoloads expose this?** Parallel entry points, autoload wrappers, or scenes that provide similar functionality. | Grep for the method/signal in related scripts and autoloads. If parity is needed, add it now — not as a follow-up. |
+   | **Do error strategies align across systems?** `push_error()` + `assert()` + null checks + signal-based error reporting — do they conflict or silently swallow failures? | List the error handling at each layer. Verify your null checks cover what the lower layer can actually return. |
 
-   **When to skip:** Leaf-node changes with no callbacks, no state persistence, no parallel interfaces. If the change is purely additive (new helper method, new view partial), the check takes 10 seconds and the answer is "nothing fires, skip."
+   **When to skip:** Leaf-node changes with no signal connections, no state persistence, no parallel interfaces. If the change is purely additive (new helper function, new child node), the check takes 10 seconds and the answer is "nothing fires, skip."
 
-   **When this matters most:** Any change that touches models with callbacks, error handling with fallback/retry, or functionality exposed through multiple interfaces.
+   **When this matters most:** Any change that touches nodes with signal connections, autoload state, Resource persistence, or functionality exposed through multiple scenes.
 
    **IMPORTANT**: Always update the original plan document by checking off completed items. Use the Edit tool to change `- [ ]` to `- [x]` for each task you finish. This keeps the plan as a living document showing progress and ensures no checkboxes are left unchecked.
 
@@ -158,7 +158,7 @@ This command takes a work document (plan, specification, or todo file) and execu
    - Don't wait until the end to test
    - Fix failures immediately
    - Add new tests for new functionality
-   - **Unit tests with mocks prove logic in isolation. Integration tests with real objects prove the layers work together.** If your change touches callbacks, middleware, or error handling — you need both.
+   - **Unit tests with doubles prove logic in isolation. Integration tests with real scene instances prove the systems work together.** If your change touches signal chains, autoload state, or Resource persistence — you need both.
 
 5. **Track Progress**
    - Keep TodoWrite updated as you complete tasks
@@ -229,7 +229,7 @@ This command takes a work document (plan, specification, or todo file) and execu
 
    ---
 
-   [![Compound Engineered](https://img.shields.io/badge/Compound-Engineered-6366f1)](https://github.com/EveryInc/godot-compound) 🤖 Generated with [Claude Code](https://claude.com/claude-code)
+   [![Compound Engineered](https://img.shields.io/badge/Compound-Engineered-6366f1)](https://github.com/CuriousCrow123/godot-compound) 🤖 Generated with [Claude Code](https://claude.com/claude-code)
    EOF
    )"
    ```

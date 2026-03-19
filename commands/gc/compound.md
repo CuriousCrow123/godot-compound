@@ -91,7 +91,6 @@ The orchestrating agent (main conversation) performs these steps:
 
 Based on problem type, optionally invoke specialized agents to review the documentation:
 
-- **test_failure** → `cora-test-reviewer`
 - Any code-heavy issue → `gc-code-simplicity-reviewer` + `gc-pattern-recognition-specialist`
 
 </parallel_tasks>
@@ -131,8 +130,9 @@ Based on problem type, optionally invoke specialized agents to review the docume
 - test-failures/
 - runtime-errors/
 - performance-issues/
-- database-issues/
-- security-issues/
+- resource-errors/
+- scene-issues/
+- signal-issues/
 - ui-bugs/
 - integration-issues/
 - logic-errors/
@@ -212,12 +212,9 @@ Based on problem type, these agents can enhance documentation:
 - **gc-code-simplicity-reviewer**: Ensures solution code is minimal and clear
 - **gc-pattern-recognition-specialist**: Identifies anti-patterns or repeating issues
 
-### Specific Domain Experts
-- **cora-test-reviewer**: Creates test cases for prevention strategies
-
 ### Enhancement & Documentation
-- **best-practices-researcher**: Enriches solution with industry best practices
-- **framework-docs-researcher**: Links to Godot/GDScript documentation references
+- **gc-best-practices-researcher**: Enriches solution with Godot best practices
+- **gc-framework-docs-researcher**: Links to Godot/GDScript documentation references
 
 ### When to Invoke
 - **Auto-triggered** (optional): Agents can run post-documentation for enhancement

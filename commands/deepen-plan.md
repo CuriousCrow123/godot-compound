@@ -45,8 +45,8 @@ First, read and parse the plan to identify each major section that can be enhanc
 - [ ] Code examples and file references
 - [ ] Acceptance criteria
 - [ ] Any UI/UX components mentioned
-- [ ] Technologies/frameworks mentioned (Rails, React, Python, TypeScript, etc.)
-- [ ] Domain areas (data models, APIs, UI, security, performance, etc.)
+- [ ] Technologies/frameworks mentioned (Godot, GDScript, GUT, gdtoolkit, etc.)
+- [ ] Domain areas (scene architecture, signals, Resources, autoloads, performance, etc.)
 
 **Create a section manifest:**
 ```
@@ -208,9 +208,9 @@ Compare each learning's frontmatter against the plan:
 - `symptom:` / `root_cause:` - Could this problem occur with the plan?
 
 **SKIP learnings that are clearly not applicable:**
-- Plan is frontend-only → skip `database-migrations/` learnings
-- Plan is Python → skip `rails-specific/` learnings
-- Plan has no auth → skip `authentication-issues/` learnings
+- Plan is GDScript-only → skip `build-errors/` learnings about export
+- Plan is scene architecture → skip `performance-issues/` learnings
+- Plan has no signals → skip `signal-issues/` learnings
 
 **SPAWN sub-agents for learnings that MIGHT apply:**
 - Any tag overlap with plan technologies
@@ -246,17 +246,17 @@ If NOT relevant after deeper analysis:
 
 **Example filtering:**
 ```
-# Found 15 learning files, plan is about "Rails API caching"
+# Found 8 learning files, plan is about "scene transition system"
 
 # SPAWN (likely relevant):
-docs/solutions/performance-issues/n-plus-one-queries.md      # tags: [activerecord] ✓
-docs/solutions/performance-issues/redis-cache-stampede.md    # tags: [caching, redis] ✓
-docs/solutions/configuration-fixes/redis-connection-pool.md  # tags: [redis] ✓
+docs/solutions/signal-issues/signal-leak-scene-transitions.md  # tags: [signals, scenes] ✓
+docs/solutions/resource-errors/shared-resource-mutation.md     # tags: [resources] ✓
+docs/solutions/runtime-errors/autoload-init-order.md           # tags: [autoloads] ✓
 
 # SKIP (clearly not applicable):
-docs/solutions/deployment-issues/heroku-memory-quota.md      # not about caching
-docs/solutions/frontend-issues/stimulus-race-condition.md    # plan is API, not frontend
-docs/solutions/authentication-issues/jwt-expiry.md           # plan has no auth
+docs/solutions/build-errors/android-export-crash.md            # not about scene transitions
+docs/solutions/performance-issues/process-callback-abuse.md    # plan is architecture, not perf
+docs/solutions/ui-bugs/control-focus-order.md                  # plan has no UI controls
 ```
 
 **Spawn sub-agents in PARALLEL for all filtered learnings.**
@@ -492,53 +492,50 @@ Based on selection:
 
 ## Example Enhancement
 
-**Before (from /workflows:plan):**
+**Before (from /gc:plan):**
 ```markdown
 ## Technical Approach
 
-Use React Query for data fetching with optimistic updates.
+Use signals for scene transition communication.
 ```
 
-**After (from /workflows:deepen-plan):**
+**After (from /deepen-plan):**
 ```markdown
 ## Technical Approach
 
-Use React Query for data fetching with optimistic updates.
+Use signals for scene transition communication.
 
 ### Research Insights
 
 **Best Practices:**
-- Configure `staleTime` and `cacheTime` based on data freshness requirements
-- Use `queryKey` factories for consistent cache invalidation
-- Implement error boundaries around query-dependent components
+- Connect signals in `_ready()` only after child nodes are available
+- Use `call_deferred()` for scene tree modifications during signal callbacks
+- Disconnect signals before `queue_free()` to prevent orphaned connections
 
 **Performance Considerations:**
-- Enable `refetchOnWindowFocus: false` for stable data to reduce unnecessary requests
-- Use `select` option to transform and memoize data at query level
-- Consider `placeholderData` for instant perceived loading
+- Prefer direct signal connections over the Event Bus for parent-child communication
+- Use typed signal parameters to avoid runtime type errors
+- Cache node references with `@onready` instead of repeated `get_node()` calls
 
 **Implementation Details:**
-```typescript
-// Recommended query configuration
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 5 * 60 * 1000, // 5 minutes
-      retry: 2,
-      refetchOnWindowFocus: false,
-    },
-  },
-});
+```gdscript
+## Recommended signal connection pattern
+func _ready() -> void:
+    var player: CharacterBody2D = get_node("Player")
+    player.health_changed.connect(_on_player_health_changed)
+
+func _on_player_health_changed(new_health: int) -> void:
+    health_bar.value = new_health
 ```
 
 **Edge Cases:**
-- Handle race conditions with `cancelQueries` on component unmount
-- Implement retry logic for transient network failures
-- Consider offline support with `persistQueryClient`
+- Handle `queue_free()` during active signal emission (use `call_deferred`)
+- Guard against signals emitted in `_ready()` before listeners connect
+- Disconnect signals from dynamically created nodes before freeing
 
 **References:**
-- https://tanstack.com/query/latest/docs/react/guides/optimistic-updates
-- https://tkdodo.eu/blog/practical-react-query
+- https://docs.godotengine.org/en/stable/getting_started/step_by_step/signals.html
+- GDQuest signal best practices
 ```
 
 NEVER CODE! Just research and enhance the plan.
